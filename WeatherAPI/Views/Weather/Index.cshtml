@@ -2,15 +2,11 @@
     ViewData["Title"] = "Current Weather";
 }
 
-@model WeatherDataObjects
-
 <div class="text-center">
-    <h1 class="display-4">Today's Forecast:</h1>
-    <img src=@Model.iconURI alt="Weather icon"/>
-    <p>The weather outside feels like @Model.main.feels_like degrees fahrenheit</p>
-    <p>The temperature is @Model.main.temp degrees fahrenheit</p>
-    <p>The high for today is @Model.main.temp_max fahrenheit</p>
-    <p>The low for today is @Model.main.temp_min fahrenheit</p>
-    @*<p>@ViewData["Title"]</p>*@
+    <h1 class="display-4">Get weather data here</h1>
+    <form>
+        <input title="Day span" value="7"/>
+        <button type="submit">Get daily forecast</button>
+    </form>
 </div>
 

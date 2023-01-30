@@ -16,6 +16,7 @@
   <ItemGroup>
     <Folder Include="Views\Weather\" />
     <Folder Include="Models\Handlers\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
@@ -23,6 +24,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\Procfile" />
     <Content Remove="wwwroot\.deployment" />
+    <Content Remove="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\Procfile" />

@@ -4,29 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using WeatherAPI.Models.Handlers;
-using System.Text.Json;
 using WeatherAPI.Models;
 
 namespace WeatherAPI.Controllers
 {
-    public class WeatherController : Controller
+    public class DailyForecastController : Controller
     {
         private static string apiKey = "6370395d8e70e092cba97f7184323986";
         public static string city = "Topeka";
         public static string units = "imperial";
-        public static string count = "7";
+        public static string count = "7"; 
         //private static string? icon;
         private string getDailyForecastURI = $"https://api.openweathermap.org/data/2.5/forecast/daily?q={city}$cnt={count}&appid={apiKey}&units={units}";
 
-        public async Task<IActionResult> Index()
-        {
-            return View();
-        }
+        // GET: /DailyForecast/
 
-        // GET: /Weather/DailyForecast/
-        [HttpGet("/DailyForecast/{dayCount}")]
-        public async Task<IActionResult> DailyForecast(int dayCount)
+        public async Task<IActionResult> Index()
         {
             DailyForecastDataObjects? dailyForecastDataObjects;
 
@@ -36,20 +29,18 @@ namespace WeatherAPI.Controllers
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     dailyForecastDataObjects = JsonConvert.DeserializeObject<DailyForecastDataObjects>(apiResponse);
+
+                    //if (dailyForecastDataObjects != null)
+                    //{
+                    //    icon = dailyForecastDataObjects.weather[0].icon;
+                    //    string? weatherIconURI = $"http://openweathermap.org/img/wn/{icon}@2x.png";
+                    //    dailyForecastDataObjects.iconURI = weatherIconURI;
+                    //}
                 }
             }
 
-            return View(dailyForecastDataObjects);
-        }
 
-        // GET: /Weather?DaySpan={dayCount}
-        [HttpGet("DaySpan/{dayCount}")]
-        public async Task<IActionResult> DaySpan(string dayCount)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                return Redirect($"/DailyForecast/{Int32.Parse(dayCount)}");
-            }
+            return View(dailyForecastDataObjects);
         }
     }
 }
