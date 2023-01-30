@@ -20,4 +20,12 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\Procfile" />
+    <Content Remove="wwwroot\.deployment" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\Procfile" />
+    <None Include="wwwroot\.deployment" />
+  </ItemGroup>
 </Project>
