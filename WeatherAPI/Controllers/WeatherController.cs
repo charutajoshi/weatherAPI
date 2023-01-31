@@ -12,44 +12,70 @@ namespace WeatherAPI.Controllers
 {
     public class WeatherController : Controller
     {
-        private static string apiKey = "6370395d8e70e092cba97f7184323986";
+        private static string apiKey = "cd519211468d11d46d67337cae2e64eb";
         public static string city = "Topeka";
         public static string units = "imperial";
         public static string count = "7";
-        //private static string? icon;
-        private string getDailyForecastURI = $"https://api.openweathermap.org/data/2.5/forecast/daily?q={city}$cnt={count}&appid={apiKey}&units={units}";
+        private static string? icon;
+        //private string getDailyForecastURI = $"https://api.openweathermap.org/data/2.5/forecast/daily?q={city}&cnt={count}&appid={apiKey}&units={units}";
+        private string getWeatherByCityURI = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}&units={units}";
 
         public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        // GET: /Weather/DailyForecast/
-        [HttpGet("/DailyForecast/{dayCount}")]
-        public async Task<IActionResult> DailyForecast(int dayCount)
+        // GET: /Weather/DailyForecast
+        //[HttpGet("/DailyForecast")]
+        //public async Task<IActionResult> DailyForecast(int dayCount)
+        //{
+        //    DailyForecastDataObjects? dailyForecastDataObjects;
+
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        using (var response = await httpClient.GetAsync(getDailyForecastURI))
+        //        {
+        //            string apiResponse = await response.Content.ReadAsStringAsync();
+        //            dailyForecastDataObjects = JsonConvert.DeserializeObject<DailyForecastDataObjects>(apiResponse);
+        //        }
+        //    }
+
+        //    return View(dailyForecastDataObjects);
+        //}
+
+        // GET: /Weather/DailyForecast?dayCount={int}
+        [Route("Weather/DailyForecast")]
+        public async Task<IActionResult> DailyForecastForNDays(int dayCount)
         {
             DailyForecastDataObjects? dailyForecastDataObjects;
 
             using (var httpClient = new HttpClient())
-            {
-                using (var response = await httpClient.GetAsync(getDailyForecastURI))
+            { 
+                using (var response = await httpClient.GetAsync(getWeatherByCityURI))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     dailyForecastDataObjects = JsonConvert.DeserializeObject<DailyForecastDataObjects>(apiResponse);
                 }
+
+                if (dailyForecastDataObjects != null)
+                {
+                    dailyForecastDataObjects.cnt = dayCount.ToString(); 
+                    if (dailyForecastDataObjects.list is not null)
+                    {
+                        foreach (var forecast in dailyForecastDataObjects.list)
+                        {
+                            if (forecast.weather is not null)
+                            {
+                                icon = forecast.weather.icon;
+                                string? weatherIconURI = $"http://openweathermap.org/img/wn/{icon}@2x.png";
+                                dailyForecastDataObjects.iconURI = weatherIconURI;
+                            }
+                        }                        
+                    }
+                }
             }
 
             return View(dailyForecastDataObjects);
-        }
-
-        // GET: /Weather?DaySpan={dayCount}
-        [HttpGet("DaySpan/{dayCount}")]
-        public async Task<IActionResult> DaySpan(string dayCount)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                return Redirect($"/DailyForecast/{Int32.Parse(dayCount)}");
-            }
         }
     }
 }

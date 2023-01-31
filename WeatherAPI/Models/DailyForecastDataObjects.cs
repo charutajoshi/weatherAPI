@@ -12,7 +12,8 @@ namespace WeatherAPI.Models
 		public string? message { get; set; }
 		public string? cnt { get; set; }
 		public List[]? list { get; set; }
-	}
+        public string iconURI { get; set; }
+    }
 
 	public class City
 	{

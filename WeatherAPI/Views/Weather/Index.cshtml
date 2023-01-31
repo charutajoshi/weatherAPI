@@ -5,8 +5,8 @@
 <div class="text-center">
     <h1 class="display-4">Get weather data here</h1>
     <form>
-        <input title="Day span" value="7"/>
-        <button type="submit">Get daily forecast</button>
+        <input id="Find" class="form-control" name="dayCount" />
+        <input type="submit" value="Find" class="btn btn-primary" asp-controller="Weather" asp-action="DailyForecast"/>
     </form>
 </div>
 
